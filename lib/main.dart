@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:poketest/Const/colorsType.dart' as Const;
 void main() {
   runApp(const MyApp());
@@ -58,10 +57,10 @@ class _PokedexState extends State<Pokedex> {
             _scrollController.position.pixels <= halfwayPoint + 50 ) || _scrollController.position.maxScrollExtent == _scrollController.offset){
        
          if(isFirstUpdatePokemon){
-            offset = offset + 80;
+            offset = offset + 30;
             isFirstUpdatePokemon = false;
           }else{
-             offset = offset + 100;
+             offset = offset + 50;
           }
 
          if(offset <= 1000){
@@ -82,7 +81,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-   Future<void> getPokemonDetails({int offset = 0,int limit = 100}) async {
+   Future<void> getPokemonDetails({int offset = 0,int limit = 50}) async {
     try {
 
     
@@ -105,7 +104,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 100}) async {
+  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 50}) async {
   List<Pokemon> pokemons = [];
 
   try {
@@ -147,11 +146,11 @@ class _PokedexState extends State<Pokedex> {
     return columns > 0 ? columns : 1; 
   }
 
-  Color getColor(int index){
+  Color getColor(int index, double opacity){
 
     String? color = colorType.firstWhere((element) => element['type'] == allPokemom[index].types![0].type?.name)['color'];
 
-    return Color(int.parse("0xFF${color!.substring(1)}"));
+    return Color(int.parse("0xFF${color!.substring(1)}")).withOpacity(opacity);
 
 
   }
@@ -161,7 +160,7 @@ class _PokedexState extends State<Pokedex> {
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(  
-      backgroundColor: Colors.amberAccent,
+      // backgroundColor: Colors.amberAccent[50],
       body: Container(
                       margin: const EdgeInsets.all(8),
                       child: allPokemom.isNotEmpty? 
@@ -178,13 +177,9 @@ class _PokedexState extends State<Pokedex> {
                                Container(    
                                     padding: const EdgeInsets.all(10),                    
                                   decoration: BoxDecoration(
-                                  color: getColor(index),
-                                  // border: const Border(
-                                  //       top: BorderSide(color: Colors.black, width: 4.0),
-                                  //       bottom: BorderSide(color: Colors.black, width: 4.0),
-                                  //       left: BorderSide(color: Colors.black, width: 4.0),
-                                  //       right: BorderSide(color: Colors.black, width: 4.0),
-                                  //     ),
+                                  color: getColor(index,1),
+                                  // border: Border.all(width: 4, color: 
+                                  // HSLColor.fromColor(getColor(index, 0.5)).withLightness(0.5).toColor()),
                                   
                                   borderRadius: BorderRadius.circular(20.0),  
                                 ),

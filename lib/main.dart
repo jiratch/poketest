@@ -60,10 +60,10 @@ class _PokedexState extends State<Pokedex> {
             offset = offset + 20;
             isFirstUpdatePokemon = false;
           }else{
-             offset = offset + 70;
+             offset = offset + 50;
           }
 
-         if(offset <= 1000){
+         if(offset < 1000){
            getPokemonDetails(offset:offset);
          }
          
@@ -81,7 +81,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-   Future<void> getPokemonDetails({int offset = 0,int limit = 70}) async {
+   Future<void> getPokemonDetails({int offset = 0,int limit = 50}) async {
     try {
 
     
@@ -104,7 +104,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 70}) async {
+  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 50}) async {
   List<Pokemon> pokemons = [];
 
   try {
@@ -171,9 +171,10 @@ class _PokedexState extends State<Pokedex> {
                                 crossAxisSpacing: 8.0,
                                 mainAxisSpacing: 8.0,
                               ),
-                              itemCount: allPokemom.length+1, 
+                              itemCount: allPokemom.length, 
                                  itemBuilder: (BuildContext context, int index) {
-                                return index < allPokemom.length ?
+                                return 
+                                //index < allPokemom.length ?
                                Container(    
                                     padding: const EdgeInsets.all(10),                    
                                   decoration: BoxDecoration(
@@ -235,9 +236,9 @@ class _PokedexState extends State<Pokedex> {
                  
                         
                                   ),
-                                ):
+                                );
                                  
-                                  const Center(child: CircularProgressIndicator());
+                                  // const Center(child: CircularProgressIndicator());
                               },
                             ): const Center(child: CircularProgressIndicator()),
                     ),

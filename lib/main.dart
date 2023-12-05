@@ -35,7 +35,7 @@ class _PokedexState extends State<Pokedex> {
 
   final ScrollController _scrollController = ScrollController();
   List<PokemonDetail> allPokemom = [];
-  int offset = 20;
+  int offset = 0;
 
   bool halfwayReached = false;
   bool isFirstUpdatePokemon = true;
@@ -45,7 +45,7 @@ class _PokedexState extends State<Pokedex> {
   void initState() {
     super.initState();
 
-    getPokemonDetails(limit:20); //getPokemonDetails first time
+    getPokemonDetails(limit:30); //getPokemonDetails first time
 
     _scrollController.addListener(() {
      if (!halfwayReached) {
@@ -60,7 +60,7 @@ class _PokedexState extends State<Pokedex> {
             offset = offset + 30;
             isFirstUpdatePokemon = false;
           }else{
-             offset = offset + 50;
+             offset = offset + 70;
           }
 
          if(offset <= 1000){
@@ -81,7 +81,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-   Future<void> getPokemonDetails({int offset = 0,int limit = 50}) async {
+   Future<void> getPokemonDetails({int offset = 0,int limit = 70}) async {
     try {
 
     
@@ -104,7 +104,7 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 50}) async {
+  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 70}) async {
   List<Pokemon> pokemons = [];
 
   try {
@@ -191,28 +191,44 @@ class _PokedexState extends State<Pokedex> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [          
-                            Align(child: Text("# ${allPokemom[index].order}",style: 
-                            TextStyle(fontSize: orientation == Orientation.landscape? 16 : 22, 
+                            Align(child: Text("# ${allPokemom[index].id}",style: 
+                            TextStyle(fontSize: orientation == Orientation.landscape? 14 : 22, 
                             fontWeight: FontWeight.w500,color: Colors.white),),
                             alignment: Alignment.topRight,),              
-                            Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",  
-                            //  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                            //     if (loadingProgress == null) {
-                            //       return child;
-                            //     } else {
-                            //       return Container(
-                            //         width: 100, 
-                            //         height: 100,
-                            //         color: Colors.transparent, 
-                                
-                            //       );
-                            //     }
-                            //   },                         
-                            width: orientation == Orientation.landscape? 90 : 100,),
-                           Text(
+                            SizedBox(
+                              width: orientation == Orientation.landscape? 90 : 100,
+                              height: orientation == Orientation.landscape? 90 : 100,
+                              child: Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",  
+                                                     
+                              width: orientation == Orientation.landscape? 90 : 100,),
+                            ),
+                            LayoutBuilder(
+                                  builder: (BuildContext context, BoxConstraints constraints) {
+
+                                    double fontSize = 16;
+                                   
+                                    TextPainter textPainter = TextPainter(
+                                      text: TextSpan(text: '${allPokemom[index].name}', style: TextStyle(fontSize: 16.0)),
+                                      maxLines: 1,
+                                      textDirection: TextDirection.ltr,
+                                    )..layout(maxWidth: constraints.maxWidth);
+
+                                    if (textPainter.didExceedMaxLines) {
+                                      // Handle overflow
+                                      fontSize = 13.5;
+                                    }
+
+                                    return Text(
+                                      maxLines: 1,
                                 '${allPokemom[index].name}',
-                                style:  TextStyle(fontWeight: FontWeight.w400, fontSize: orientation == Orientation.landscape? 16 : 20,color: Colors.white),
-                              ),
+                                style:  TextStyle(fontWeight: FontWeight.w400, fontSize : fontSize,color: Colors.white),
+                                 );
+                                  },
+                                )
+                          //  Text(
+                          //       '${allPokemom[index].name}',
+                          //       style:  TextStyle(fontWeight: FontWeight.w400, fontSize: orientation == Orientation.landscape? 16 : 20,color: Colors.white),
+                          //     ),
                             
                           ],
                         ),
@@ -259,18 +275,21 @@ class PokemonDetail {
   Sprites? sprites;
   List<Types>? types;
   int? weight;
+  int? id;
 
   PokemonDetail(
       {this.height,
-      this.name,
+      this.name,    
       this.order,
       this.sprites,
       this.types,
-      this.weight});
+      this.weight,
+      this.id});
 
   PokemonDetail.fromJson(Map<String, dynamic> json) {
     height = json['height'];
     name = json['name'];
+    id = json['id'];
     order = json['order'];
     sprites =
         json['sprites'] != null ? new Sprites.fromJson(json['sprites']) : null;

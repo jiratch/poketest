@@ -52,8 +52,8 @@ class _PokedexState extends State<Pokedex> {
         double halfwayPoint = (_scrollController.position.maxScrollExtent +
                 _scrollController.position.minScrollExtent) / 2;
 
-        if(_scrollController.position.pixels >= halfwayPoint - 50 &&
-            _scrollController.position.pixels <= halfwayPoint + 50){
+        if((_scrollController.position.pixels >= halfwayPoint - 50 &&
+            _scrollController.position.pixels <= halfwayPoint + 50 ) || _scrollController.position.maxScrollExtent == _scrollController.offset){
        
          if(isFirstUpdatePokemon){
             offset = offset + 80;
@@ -64,7 +64,6 @@ class _PokedexState extends State<Pokedex> {
 
          if(offset <= 1000){
            getPokemonDetails(offset:offset);
-          //  halfwayReached = false;
          }
          
          halfwayReached = true; // Set the flag to true
@@ -96,9 +95,6 @@ class _PokedexState extends State<Pokedex> {
           allPokemom.addAll(pokemonDetails);
           halfwayReached = false;
         }); 
-
-   
-     //   return pokemonDetails;
   
     } catch (e) {
    
@@ -152,11 +148,12 @@ class _PokedexState extends State<Pokedex> {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(  
       backgroundColor: Colors.amber,
       body: Container(
                       margin: const EdgeInsets.all(8),
-                      child: allPokemom.length > 0? 
+                      child: allPokemom.isNotEmpty? 
                            GridView.builder(
                               controller: _scrollController,
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -164,10 +161,10 @@ class _PokedexState extends State<Pokedex> {
                                 crossAxisSpacing: 8.0,
                                 mainAxisSpacing: 8.0,
                               ),
-                              itemCount: allPokemom.length, 
-                              itemBuilder: (BuildContext context, int index) {
+                              itemCount: allPokemom.length+1, 
+                                 itemBuilder: (BuildContext context, int index) {
                                 return index < allPokemom.length ?
-                                Container(                                  
+                               Container(                                  
                                   decoration: BoxDecoration(
                                   color: Colors.black,  
                                   borderRadius: BorderRadius.circular(20.0),  
@@ -181,17 +178,17 @@ class _PokedexState extends State<Pokedex> {
                             width: 100,),
                             Text(
                               '${allPokemom[index].name}',
-                              style: const TextStyle(fontSize: 18,color: Colors.white),
+                              style:  TextStyle(fontSize: orientation == Orientation.landscape? 16 : 18,color: Colors.white),
                             ),
                           ],
                         ),
                         
                                   ),
-                                ): 
-                                  allPokemom.length > 0 ? 
-                                  CircularProgressIndicator() : Container();
+                                ):
+                                 
+                                  const Center(child: CircularProgressIndicator());
                               },
-                            ): Center(child: CircularProgressIndicator()),
+                            ): const Center(child: CircularProgressIndicator()),
                     ),
                 
                 );

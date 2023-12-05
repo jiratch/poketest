@@ -50,7 +50,7 @@ class _PokedexState extends State<Pokedex> {
      if (!halfwayReached) {
 
         double halfwayPoint = (_scrollController.position.maxScrollExtent +
-                _scrollController.position.minScrollExtent) / 3;
+                _scrollController.position.minScrollExtent) / 2;
 
         if(_scrollController.position.pixels >= halfwayPoint - 50 &&
             _scrollController.position.pixels <= halfwayPoint + 50){

@@ -45,7 +45,7 @@ class _PokedexState extends State<Pokedex> {
   void initState() {
     super.initState();
 
-    getPokemonDetails(limit:30); //getPokemonDetails first time
+    getPokemonDetails(limit:20); //getPokemonDetails first time
 
     _scrollController.addListener(() {
      if (!halfwayReached) {
@@ -57,7 +57,7 @@ class _PokedexState extends State<Pokedex> {
             _scrollController.position.pixels <= halfwayPoint + 50 ) || _scrollController.position.maxScrollExtent == _scrollController.offset){
        
          if(isFirstUpdatePokemon){
-            offset = offset + 30;
+            offset = offset + 20;
             isFirstUpdatePokemon = false;
           }else{
              offset = offset + 70;

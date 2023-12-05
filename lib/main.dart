@@ -35,33 +35,40 @@ class _PokedexState extends State<Pokedex> {
 
   final ScrollController _scrollController = ScrollController();
   List<PokemonDetail> allPokemom = [];
-  int offset = 0;
-  bool _isLoading = false;
+  int offset = 20;
 
   bool halfwayReached = false;
+  bool isFirstUpdatePokemon = true;
+
      @override
   void initState() {
     super.initState();
-    getPokemonDetails(0);
-    _scrollController.addListener(() {
-      if (!halfwayReached) {
-        // Calculate the halfway point
-        double halfwayPoint = (_scrollController.position.maxScrollExtent +
-                _scrollController.position.minScrollExtent) /
-            2;
 
-        // Check if the current scroll position is at the halfway point
-        if (_scrollController.position.pixels >= halfwayPoint - 50 &&
-            _scrollController.position.pixels <= halfwayPoint + 50) {
-          // Call your function when scrolled to halfway point
-         print("call");
-         offset = offset + 100;
+    getPokemonDetails(limit:20); //getPokemonDetails first time
+
+    _scrollController.addListener(() {
+     if (!halfwayReached) {
+
+        double halfwayPoint = (_scrollController.position.maxScrollExtent +
+                _scrollController.position.minScrollExtent) / 3;
+
+        if(_scrollController.position.pixels >= halfwayPoint - 50 &&
+            _scrollController.position.pixels <= halfwayPoint + 50){
+       
+         if(isFirstUpdatePokemon){
+            offset = offset + 80;
+            isFirstUpdatePokemon = false;
+          }else{
+             offset = offset + 100;
+          }
+
          if(offset <= 1000){
-           getPokemonDetails(offset);
+           getPokemonDetails(offset:offset);
+          //  halfwayReached = false;
          }
          
-          halfwayReached = true; // Set the flag to true
-        }
+         halfwayReached = true; // Set the flag to true
+       }
       }
     });
   }
@@ -74,14 +81,11 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-   Future<List<PokemonDetail>> getPokemonDetails(int offset) async {
+   Future<void> getPokemonDetails({int offset = 0,int limit = 100}) async {
     try {
 
-      setState(() {
-           _isLoading = true;        
-      });
     
-        List<Pokemon> pokemons = await getPokemons(offset);
+        List<Pokemon> pokemons = await getPokemons(offset:offset,limit: limit);
 
         List<Future<PokemonDetail>> futures = pokemons.map((pokemon) {
           return fetchPokemonDetail(pokemon.url);
@@ -90,28 +94,25 @@ class _PokedexState extends State<Pokedex> {
         List<PokemonDetail> pokemonDetails = await Future.wait(futures);
         setState(() {
           allPokemom.addAll(pokemonDetails);
+          halfwayReached = false;
         }); 
 
-         setState(() {
-           _isLoading = false;        
-      });
-        return pokemonDetails;
+   
+     //   return pokemonDetails;
   
     } catch (e) {
-         setState(() {
-           _isLoading = false;        
-      });
+   
       throw Exception('err Pokemon details: $e');
     }
   }
 
 
-  Future<List<Pokemon>> getPokemons(int offset) async {
+  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 100}) async {
   List<Pokemon> pokemons = [];
 
   try {
  
-      final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?offset=$offset&limit=100'));
+      final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/?offset=$offset&limit=$limit'));
 
       if (response.
       statusCode == 200) {
@@ -142,40 +143,21 @@ class _PokedexState extends State<Pokedex> {
     }
   }
 
-
-  @override
-  Widget build(BuildContext context) {
-
-    int calculateCrossAxisCount(BuildContext context) {
+  int calculateCrossAxisCount(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     int columns = (screenWidth/150).floor(); 
     return columns > 0 ? columns : 1; 
   }
+
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(  
       backgroundColor: Colors.amber,
-      body: 
-      
-      // FutureBuilder<List<PokemonDetail>>(
-      //       future: getPokemonDetails(0),
-      //       builder: (context, snapshot) {
-      //         if (snapshot.connectionState == ConnectionState.waiting) {
-      //           return  const Center(child: CircularProgressIndicator());
-      //         } else if (snapshot.hasError) {
-      //           return Text('Error: ${snapshot.error}');
-      //         } else {
-      //           final List<PokemonDetail> pokemons = snapshot.data!;
-      //           return  GestureDetector(
-      //             onVerticalDragUpdate: (details) {
-      //               if (details.primaryDelta! < 0 && details.globalPosition.dy > 100) {
-      //                 print("at 100");
-      //               }
-      //             },
-      //             child: 
-                  ModalProgressHUD(
-                    inAsyncCall: _isLoading,
-                    child: Container(
-                      margin: EdgeInsets.all(8),
-                      child: GridView.builder(
+      body: Container(
+                      margin: const EdgeInsets.all(8),
+                      child: allPokemom.length > 0? 
+                           GridView.builder(
                               controller: _scrollController,
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: calculateCrossAxisCount(context), 
@@ -184,8 +166,8 @@ class _PokedexState extends State<Pokedex> {
                               ),
                               itemCount: allPokemom.length, 
                               itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  
+                                return index < allPokemom.length ?
+                                Container(                                  
                                   decoration: BoxDecoration(
                                   color: Colors.black,  
                                   borderRadius: BorderRadius.circular(20.0),  
@@ -195,7 +177,7 @@ class _PokedexState extends State<Pokedex> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",
+                            Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",                           
                             width: 100,),
                             Text(
                               '${allPokemom[index].name}',
@@ -205,11 +187,13 @@ class _PokedexState extends State<Pokedex> {
                         ),
                         
                                   ),
-                                );
+                                ): 
+                                  allPokemom.length > 0 ? 
+                                  CircularProgressIndicator() : Container();
                               },
-                            ),
+                            ): Center(child: CircularProgressIndicator()),
                     ),
-                  ),
+                
                 );
                 
             

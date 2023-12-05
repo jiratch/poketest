@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:poketest/Const/colorsType.dart' as Const;
 void main() {
   runApp(const MyApp());
 }
@@ -39,6 +40,7 @@ class _PokedexState extends State<Pokedex> {
 
   bool halfwayReached = false;
   bool isFirstUpdatePokemon = true;
+  final colorType = Const.colortypes;
 
      @override
   void initState() {
@@ -145,12 +147,21 @@ class _PokedexState extends State<Pokedex> {
     return columns > 0 ? columns : 1; 
   }
 
+  Color getColor(int index){
+
+    String? color = colorType.firstWhere((element) => element['type'] == allPokemom[index].types![0].type?.name)['color'];
+
+    return Color(int.parse("0xFF${color!.substring(1)}"));
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(  
-      backgroundColor: Colors.amber,
+      backgroundColor: Colors.amberAccent,
       body: Container(
                       margin: const EdgeInsets.all(8),
                       child: allPokemom.isNotEmpty? 
@@ -164,24 +175,53 @@ class _PokedexState extends State<Pokedex> {
                               itemCount: allPokemom.length+1, 
                                  itemBuilder: (BuildContext context, int index) {
                                 return index < allPokemom.length ?
-                               Container(                                  
+                               Container(    
+                                    padding: const EdgeInsets.all(10),                    
                                   decoration: BoxDecoration(
-                                  color: Colors.black,  
+                                  color: getColor(index),
+                                  // border: const Border(
+                                  //       top: BorderSide(color: Colors.black, width: 4.0),
+                                  //       bottom: BorderSide(color: Colors.black, width: 4.0),
+                                  //       left: BorderSide(color: Colors.black, width: 4.0),
+                                  //       right: BorderSide(color: Colors.black, width: 4.0),
+                                  //     ),
+                                  
                                   borderRadius: BorderRadius.circular(20.0),  
                                 ),
                                   child: Center(
-                      child:  Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      child:  
+                       
+                          Column(
+                          
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",                           
-                            width: 100,),
-                            Text(
-                              '${allPokemom[index].name}',
-                              style:  TextStyle(fontSize: orientation == Orientation.landscape? 16 : 18,color: Colors.white),
-                            ),
+                          children: [          
+                            Align(child: Text("# ${allPokemom[index].order}",style: 
+                            TextStyle(fontSize: orientation == Orientation.landscape? 16 : 22, 
+                            fontWeight: FontWeight.w500,color: Colors.white),),
+                            alignment: Alignment.topRight,),              
+                            Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",  
+                            //  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                            //     if (loadingProgress == null) {
+                            //       return child;
+                            //     } else {
+                            //       return Container(
+                            //         width: 100, 
+                            //         height: 100,
+                            //         color: Colors.transparent, 
+                                
+                            //       );
+                            //     }
+                            //   },                         
+                            width: orientation == Orientation.landscape? 90 : 100,),
+                           Text(
+                                '${allPokemom[index].name}',
+                                style:  TextStyle(fontWeight: FontWeight.w400, fontSize: orientation == Orientation.landscape? 16 : 20,color: Colors.white),
+                              ),
+                            
                           ],
                         ),
+                 
                         
                                   ),
                                 ):
@@ -222,8 +262,16 @@ class PokemonDetail {
   String? name;
   int? order;
   Sprites? sprites;
+  List<Types>? types;
+  int? weight;
 
-  PokemonDetail({this.height, this.name, this.order, this.sprites});
+  PokemonDetail(
+      {this.height,
+      this.name,
+      this.order,
+      this.sprites,
+      this.types,
+      this.weight});
 
   PokemonDetail.fromJson(Map<String, dynamic> json) {
     height = json['height'];
@@ -231,29 +279,6 @@ class PokemonDetail {
     order = json['order'];
     sprites =
         json['sprites'] != null ? new Sprites.fromJson(json['sprites']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['height'] = this.height;
-    data['name'] = this.name;
-    data['order'] = this.order;
-    if (this.sprites != null) {
-      data['sprites'] = this.sprites!.toJson();
-    }
-    return data;
-  }
-}
-
-class Sprites {
-  Other? other;
-  List<Types>? types;
-  int? weight;
-
-  Sprites({this.other, this.types, this.weight});
-
-  Sprites.fromJson(Map<String, dynamic> json) {
-    other = json['other'] != null ? new Other.fromJson(json['other']) : null;
     if (json['types'] != null) {
       types = <Types>[];
       json['types'].forEach((v) {
@@ -265,13 +290,34 @@ class Sprites {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.other != null) {
-      data['other'] = this.other!.toJson();
+    data['height'] = this.height;
+    data['name'] = this.name;
+    data['order'] = this.order;
+    if (this.sprites != null) {
+      data['sprites'] = this.sprites!.toJson();
     }
     if (this.types != null) {
       data['types'] = this.types!.map((v) => v.toJson()).toList();
     }
     data['weight'] = this.weight;
+    return data;
+  }
+}
+
+class Sprites {
+  Other? other;
+
+  Sprites({this.other});
+
+  Sprites.fromJson(Map<String, dynamic> json) {
+    other = json['other'] != null ? new Other.fromJson(json['other']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.other != null) {
+      data['other'] = this.other!.toJson();
+    }
     return data;
   }
 }
@@ -354,3 +400,4 @@ class Type {
     return data;
   }
 }
+

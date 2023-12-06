@@ -19,7 +19,7 @@ class PokemonInfo extends StatelessWidget {
         height: 45,
         width: 100,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: 2),
+          border: Border.all(color: Colors.black, width: 1),
           color: color,
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -116,6 +116,7 @@ class PokemonInfo extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Expanded(
+                                    flex: 3,
                                     child: Container(
                                         decoration: BoxDecoration(  
                                           color: Colors.white.withOpacity(0.475),                                        
@@ -135,15 +136,16 @@ class PokemonInfo extends StatelessWidget {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: [
-                                                 Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} M"),
+                                                 Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters"),
                                                  Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg"),
                                               ],
                                             ),
                                           ],
                                         ))
                                         ),
-                                        SizedBox( width: 16),
+                                        SizedBox( width: 14),
                                 Expanded(
+                                  flex: 4,
                                     child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.475),                                       
@@ -158,16 +160,18 @@ class PokemonInfo extends StatelessWidget {
                                           children: [
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                const Text("Abilities"),                                             
+                                              children: const [
+                                                Text("Abilities"),                                             
                                               ],
                                             ),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              mainAxisAlignment:
+                                               pokemonDetail!.abilities!.length >=2 ? MainAxisAlignment.spaceAround: 
+                                               MainAxisAlignment.center,
                                               children: [
-                                                 Text("${pokemonDetail?.name}"),
-                                                 Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg"),
-                                              ],
+                                                 Text("${pokemonDetail?.abilities![0].ability?.name}"),
+                                                pokemonDetail!.abilities!.length >= 2 ? 
+                                                 Text("${pokemonDetail?.abilities![1].ability?.name}"): Container()                                             ],
                                             ),
                                           ],
                                         )))

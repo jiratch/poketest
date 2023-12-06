@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:poketest/Const/colorsType.dart' as Const;
 import 'package:poketest/Model/Pokemon.dart';
 import 'package:poketest/Model/PokemonDetail.dart';
+import 'package:poketest/Screen/pokemonInfo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -228,7 +229,15 @@ class _PokedexState extends State<Pokedex> {
                                         ),
                                     ],
                                   )
-                                  : const Center(child:  Text("No img"))),
+                                  :  Align(
+                                          alignment: Alignment.center,
+                                          child: 
+                                           Opacity(opacity: 0.55, child: Image.asset(
+                                            'assets/images/bgpokeball.jpg',
+                                            height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
+                                               
+                                  )
+                                  ),
                           LayoutBuilder(
                             builder: (BuildContext context,
                                 BoxConstraints constraints) {

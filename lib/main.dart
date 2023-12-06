@@ -207,16 +207,28 @@ class _PokedexState extends State<Pokedex> {
                               child: allPokemom[index]
                                           .sprites
                                           ?.other
-                                          ?.officialArtwork !=
+                                          ?.officialArtwork?.frontDefault !=
                                       null
-                                  ? Image.network(
-                                      "${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",
-                                      width:
-                                          orientation == Orientation.landscape
-                                              ? 90
-                                              : 100,
-                                    )
-                                  : Container()),
+                                  ? Stack(
+                                    children: [
+                                       Align(
+                                          alignment: Alignment.center,
+                                          child: 
+                                           Opacity(opacity: 0.65, child: Image.asset(
+                                            'assets/images/bgpokeball.jpg',
+                                            height: (MediaQuery.of(context).size.width / calculateCrossAxisCount(context))),) 
+                                               
+                                        ),
+                                      Image.network(
+                                          "${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",
+                                          width:
+                                              orientation == Orientation.landscape
+                                                  ? 90
+                                                  : 100,
+                                        ),
+                                    ],
+                                  )
+                                  : const Center(child:  Text("No img"))),
                           LayoutBuilder(
                             builder: (BuildContext context,
                                 BoxConstraints constraints) {

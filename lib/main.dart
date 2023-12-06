@@ -214,9 +214,9 @@ class _PokedexState extends State<Pokedex> {
                                        Align(
                                           alignment: Alignment.center,
                                           child: 
-                                           Opacity(opacity: 0.65, child: Image.asset(
+                                           Opacity(opacity: 0.55, child: Image.asset(
                                             'assets/images/bgpokeball.jpg',
-                                            height: (MediaQuery.of(context).size.width / calculateCrossAxisCount(context))),) 
+                                            height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
                                                
                                         ),
                                       Image.network(

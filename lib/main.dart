@@ -146,18 +146,19 @@ class _PokedexState extends State<Pokedex> {
     return columns > 0 ? columns : 1;
   }
 
-  Color getColor(int index, double opacity) {
+  Color getColor(int index) {
     String? color = colorType.firstWhere((element) =>
         element['type'] == allPokemom[index].types![0].type?.name)['color'];
 
-    return Color(int.parse("0xFF${color!.substring(1)}")).withOpacity(opacity);
+    return Color(int.parse("0xFF${color!.substring(1)}"));
   }
 
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
-      // backgroundColor: Colors.amberAccent[50],
+      backgroundColor: Colors.white,
+     
       body: Container(
         margin: const EdgeInsets.all(8),
         child: allPokemom.isNotEmpty
@@ -171,108 +172,113 @@ class _PokedexState extends State<Pokedex> {
                 itemCount: allPokemom.length,
                 itemBuilder: (BuildContext context, int index) {
                   return
-                      //index < allPokemom.length ?
-                      Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: getColor(index, 1),
-                      // border: Border.all(width: 4, color:
-                      // HSLColor.fromColor(getColor(index, 0.5)).withLightness(0.5).toColor()),
-
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "# ${allPokemom[index].id}",
-                              style: TextStyle(
-                                  fontSize: orientation == Orientation.landscape
-                                      ? 14
-                                      : 22,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                          ),
-                          SizedBox(
-                              width: orientation == Orientation.landscape
-                                  ? 90
-                                  : 100,
-                              height: orientation == Orientation.landscape
-                                  ? 90
-                                  : 100,
-                              child: allPokemom[index]
-                                          .sprites
-                                          ?.other
-                                          ?.officialArtwork?.frontDefault !=
-                                      null
-                                  ? Stack(
-                                    children: [
-                                       Align(
-                                          alignment: Alignment.center,
-                                          child: 
-                                           Opacity(opacity: 0.55, child: Image.asset(
-                                            'assets/images/bgpokeball.jpg',
-                                            height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
-                                               
-                                        ),
-                                      Image.network(
-                                          "${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",
-                                          width:
-                                              orientation == Orientation.landscape
-                                                  ? 90
-                                                  : 100,
-                                        ),
-                                    ],
+                      GestureDetector(
+                        onTap: () => {
+                      Navigator.push( context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PokemonInfo(pokemonDetail: allPokemom[index]),
+                                    ),
                                   )
-                                  :  Align(
-                                          alignment: Alignment.center,
-                                          child: 
-                                           Opacity(opacity: 0.55, child: Image.asset(
-                                            'assets/images/bgpokeball.jpg',
-                                            height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
-                                               
-                                  )
-                                  ),
-                          LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints constraints) {
-                              double fontSize = 16;
-
-                              TextPainter textPainter = TextPainter(
-                                text: TextSpan(
-                                    text: '${allPokemom[index].name}',
-                                    style: TextStyle(fontSize: 16.0)),
-                                maxLines: 1,
-                                textDirection: TextDirection.ltr,
-                              )..layout(maxWidth: constraints.maxWidth);
-
-                              if (textPainter.didExceedMaxLines) {
-                                // Handle overflow
-                                fontSize = 13.5;
-                              }
-
-                              return Text(
-                                maxLines: 1,
-                                '${allPokemom[index].name}',
+                        },
+                        child: Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                        color: getColor(index),
+                        borderRadius: BorderRadius.circular(20.0),
+                                          ),
+                                          child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "# ${allPokemom[index].id}",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize:
-                                        orientation == Orientation.landscape
-                                            ? 16
-                                            : 20,
+                                    fontSize: orientation == Orientation.landscape
+                                        ? 14
+                                        : 22,
+                                    fontWeight: FontWeight.w500,
                                     color: Colors.white),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                              ),
+                            ),
+                            SizedBox(
+                                width: orientation == Orientation.landscape
+                                    ? 90
+                                    : 100,
+                                height: orientation == Orientation.landscape
+                                    ? 90
+                                    : 100,
+                                child: allPokemom[index]
+                                            .sprites
+                                            ?.other
+                                            ?.officialArtwork?.frontDefault !=
+                                        null
+                                    ? Stack(
+                                      children: [
+                                         Align(
+                                            alignment: Alignment.center,
+                                            child: 
+                                             Opacity(opacity: 0.7, child: Image.asset(
+                                              'assets/images/bgpokeball.jpg',
+                                              height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
+                                                 
+                                          ),
+                                        Image.network(
+                                            "${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",
+                                            width:
+                                                orientation == Orientation.landscape
+                                                    ? 90
+                                                    : 100,
+                                          ),
+                                      ],
+                                    )
+                                    :  Align(
+                                            alignment: Alignment.center,
+                                            child: 
+                                             Opacity(opacity: 0.55, child: Image.asset(
+                                              'assets/images/bgpokeball.jpg',
+                                              height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
+                                                 
+                                    )
+                                    ),
+                            LayoutBuilder(
+                              builder: (BuildContext context,
+                                  BoxConstraints constraints) {
+                                double fontSize = 16;
+                      
+                                TextPainter textPainter = TextPainter(
+                                  text: TextSpan(
+                                      text: '${allPokemom[index].name}',
+                                      style: TextStyle(fontSize: 16.0)),
+                                  maxLines: 1,
+                                  textDirection: TextDirection.ltr,
+                                )..layout(maxWidth: constraints.maxWidth);
+                      
+                                if (textPainter.didExceedMaxLines) {
+                                  // Handle overflow
+                                  fontSize = 13.5;
+                                }
+                      
+                                return Text(
+                                  maxLines: 1,
+                                  '${allPokemom[index].name}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize:
+                                          orientation == Orientation.landscape
+                                              ? 16
+                                              : 20,
+                                      color: Colors.white),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                                          ),
+                                        ),
+                      );
 
                   // const Center(child: CircularProgressIndicator());
                 },

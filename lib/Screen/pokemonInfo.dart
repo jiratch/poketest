@@ -132,7 +132,7 @@ class PokemonInfo extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Expanded(
-                                    flex: 2,
+                                    flex: 1,
                                     child: Container(
                                         decoration: BoxDecoration(  
                                           color: Colors.white.withOpacity(0.475),                                        
@@ -165,7 +165,7 @@ class PokemonInfo extends StatelessWidget {
                                         ),
                                         SizedBox( width: 10),
                                 Expanded(
-                                  flex: 3,
+                                  flex: 1,
                                     child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.475),                                       
@@ -191,10 +191,10 @@ class PokemonInfo extends StatelessWidget {
                                                MainAxisAlignment.center,
                                               children: [
                                                  Text("${pokemonDetail?.abilities![0].ability?.name}",
-                                                 style: TextStyle(fontSize: 16)),
+                                                 style: TextStyle(fontSize: 14)),
                                                 pokemonDetail!.abilities!.length >= 2 ? 
                                                  Text("${pokemonDetail?.abilities![1].ability?.name}",
-                                                 style: TextStyle(fontSize: 16)): Container()                                             ],
+                                                 style: TextStyle(fontSize: 14)): Container()                                             ],
                                             ),
                                           ],
                                         )))
@@ -216,7 +216,7 @@ class PokemonInfo extends StatelessWidget {
                                  const SizedBox(
                                   height: 8,
                                 ),
-                                const Text("Base Stat",style: TextStyle(fontSize: 18)),
+                                const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
                                  ListView.builder(                                  
                                   shrinkWrap: true,
                                   itemCount: pokemonDetail?.stats?.length ?? 0,
@@ -227,6 +227,7 @@ class PokemonInfo extends StatelessWidget {
                                        child: Row(
                                         children: [
                                         Expanded(
+                                          flex: 1,
                                           child: Row(
                                           children: [
                                             Text("${pokemonDetail?.stats![index].stat?.name}", style: TextStyle(fontSize: 18)),
@@ -234,14 +235,19 @@ class PokemonInfo extends StatelessWidget {
                                             ],
                                                                             ),
                                         ),
-                                                                         Expanded(
+                                       Expanded(
+                                          flex: 1,
                                         child: Row(
                                           children: [
                                             Container( color:getStatColor(
                                               pokemonDetail!.stats![index].baseStat!
                                             ),
-                                            height: 12,
-                                            width: (pokemonDetail!.stats![index].baseStat!.toDouble() * 1.15))
+                                            height: 20,
+                                            width: (
+                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.15 >= 165? 165:
+                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.15 
+                                                )
+                                                )
                                                                        
                                             ],
                                         ),

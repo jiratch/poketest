@@ -244,8 +244,8 @@ class PokemonInfo extends StatelessWidget {
                                             ),
                                             height: 20,
                                             width: (
-                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.15 >= 165? 165:
-                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.15 
+                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 >= 165? 165:
+                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 
                                                 )
                                                 )
                                                                        

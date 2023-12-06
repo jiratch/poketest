@@ -132,7 +132,7 @@ class PokemonInfo extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Expanded(
-                                    flex: 1,
+                                    flex: 3,
                                     child: Container(
                                         decoration: BoxDecoration(  
                                           color: Colors.white.withOpacity(0.475),                                        
@@ -140,7 +140,7 @@ class PokemonInfo extends StatelessWidget {
                                               const BorderRadius.all(Radius.circular(20)),
                                         ),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -165,7 +165,7 @@ class PokemonInfo extends StatelessWidget {
                                         ),
                                         SizedBox( width: 10),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                     child: Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.475),                                       
@@ -176,26 +176,17 @@ class PokemonInfo extends StatelessWidget {
                                         ),
                                         child: 
                                         Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: const [
-                                                Text("Abilities",style: TextStyle(fontSize: 17,
-                                                fontWeight: FontWeight.w500)),                                             
-                                              ],
+                                            Text("Abilities",style: TextStyle(fontSize: 17,
+                                                fontWeight: FontWeight.w500),     
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                               pokemonDetail!.abilities!.length >=2 ? MainAxisAlignment.spaceAround: 
-                                               MainAxisAlignment.center,
-                                              children: [
-                                                 Text("${pokemonDetail?.abilities![0].ability?.name}",
-                                                 style: TextStyle(fontSize: 14)),
-                                                pokemonDetail!.abilities!.length >= 2 ? 
-                                                 Text("${pokemonDetail?.abilities![1].ability?.name}",
-                                                 style: TextStyle(fontSize: 14)): Container()                                             ],
-                                            ),
+                                            Text("${pokemonDetail?.abilities![0].ability?.name}",
+                                                 style: TextStyle(fontSize: 14)),      
+                                            
+                                          pokemonDetail!.abilities!.length >=2 ?
+                                          Text("${pokemonDetail?.abilities![1].ability?.name}",
+                                                 style: TextStyle(fontSize: 14)) : Container()
                                           ],
                                         )))
                               ],

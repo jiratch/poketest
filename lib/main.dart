@@ -187,6 +187,7 @@ class _PokedexState extends State<Pokedex> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Align(
+                            alignment: Alignment.topLeft,
                             child: Text(
                               "# ${allPokemom[index].id}",
                               style: TextStyle(
@@ -196,7 +197,6 @@ class _PokedexState extends State<Pokedex> {
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white),
                             ),
-                            alignment: Alignment.topLeft,
                           ),
                           SizedBox(
                               width: orientation == Orientation.landscape

@@ -197,7 +197,7 @@ class _PokedexState extends State<Pokedex> {
                             Align(child: Text("# ${allPokemom[index].id}",style: 
                             TextStyle(fontSize: orientation == Orientation.landscape? 14 : 22, 
                             fontWeight: FontWeight.w500,color: Colors.white),),
-                            alignment: Alignment.topRight,),              
+                            alignment: Alignment.topLeft,),              
                             SizedBox(
                               width: orientation == Orientation.landscape? 90 : 100,
                               height: orientation == Orientation.landscape? 90 : 100,
@@ -224,14 +224,11 @@ class _PokedexState extends State<Pokedex> {
                                     return Text(
                                       maxLines: 1,
                                 '${allPokemom[index].name}',
-                                style:  TextStyle(fontWeight: FontWeight.w400, fontSize : fontSize,color: Colors.white),
+                                style:  TextStyle(fontWeight: FontWeight.w400, fontSize: orientation == Orientation.landscape? 16 : 20,color: Colors.white),
                                  );
                                   },
                                 )
-                          //  Text(
-                          //       '${allPokemom[index].name}',
-                          //       style:  TextStyle(fontWeight: FontWeight.w400, fontSize: orientation == Orientation.landscape? 16 : 20,color: Colors.white),
-                          //     ),
+
                             
                           ],
                         ),

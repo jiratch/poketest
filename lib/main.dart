@@ -47,7 +47,7 @@ class _PokedexState extends State<Pokedex> {
   void initState() {
     super.initState();
 
-    getPokemonDetails(limit: 20); //getPokemonDetails first time
+    getPokemonDetails(limit: 20); //getPokemonDetails first 20 pokemon
 
     _scrollController.addListener(() {
       if (!halfwayReached) {

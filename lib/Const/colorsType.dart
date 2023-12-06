@@ -8,7 +8,7 @@ const colortypes = [
   {"type" :"bug" , "color" :  '#A8B820'},
   {"type" :"ghost" , "color" :  '#705898'},
   {"type" :"steel" , "color" :  '#B8B8D0'},
-  {"type" :"fire" , "color" :  '#FA6C6C'},
+  {"type" :"fire" , "color" :  '#F59847'},
   {"type" :"water" , "color" :  '#6890F0'},
   {"type" :"grass" , "color" :  '#48CFB2'},
   {"type" :"electric" , "color" :  '#FFCE4B'},

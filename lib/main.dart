@@ -50,27 +50,27 @@ class _PokedexState extends State<Pokedex> {
     _scrollController.addListener(() {
      if (!halfwayReached) {
 
-        double halfwayPoint = (_scrollController.position.maxScrollExtent +
-                _scrollController.position.minScrollExtent) / 2;
+        if((_scrollController.offset >= _scrollController.position.maxScrollExtent/2) || 
+           (_scrollController.position.maxScrollExtent == _scrollController.offset) && 
+           !_scrollController.position.outOfRange){
 
-        if((_scrollController.position.pixels >= halfwayPoint - 50 &&
-            _scrollController.position.pixels <= halfwayPoint + 50 ) || _scrollController.position.maxScrollExtent == _scrollController.offset){
-       
          if(isFirstUpdatePokemon){
             offset = offset + 20;
             isFirstUpdatePokemon = false;
           }else{
-             offset = offset + 50;
+             offset = offset + 60;
           }
 
-         if(offset < 970){
+         if(offset < 980){
            getPokemonDetails(offset:offset);
-         }else{
-           getPokemonDetails(offset:offset,limit: 47);
+         }else if(offset == 980){
+           getPokemonDetails(offset:offset,limit: 37);
+           offset = offset + 37;
          }
          
          halfwayReached = true; // Set the flag to true
        }
+
       }
     });
   }
@@ -83,10 +83,11 @@ class _PokedexState extends State<Pokedex> {
   }
 
 
-   Future<void> getPokemonDetails({int offset = 0,int limit = 50}) async {
+   Future<void> getPokemonDetails({int offset = 0,int limit = 60}) async {
+        int _offset = offset;
+        int _limit = limit;
     try {
 
-    
         List<Pokemon> pokemons = await getPokemons(offset:offset,limit: limit);
 
         List<Future<PokemonDetail>> futures = pokemons.map((pokemon) {
@@ -100,13 +101,14 @@ class _PokedexState extends State<Pokedex> {
         }); 
   
     } catch (e) {
-   
-      throw Exception('err Pokemon details: $e');
+      
+      //throw Exception('err Pokemon details: $e');
+      getPokemonDetails(offset: _offset,limit: _limit);
     }
   }
 
 
-  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 50}) async {
+  Future<List<Pokemon>> getPokemons({int offset = 0,int limit = 60}) async {
   List<Pokemon> pokemons = [];
 
   try {
@@ -201,9 +203,11 @@ class _PokedexState extends State<Pokedex> {
                             SizedBox(
                               width: orientation == Orientation.landscape? 90 : 100,
                               height: orientation == Orientation.landscape? 90 : 100,
-                              child: Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",  
+                              child: 
+                              allPokemom[index].sprites?.other?.officialArtwork != null? 
+                              Image.network("${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",  
                                                      
-                              width: orientation == Orientation.landscape? 90 : 100,),
+                              width: orientation == Orientation.landscape? 90 : 100,):Container()
                             ),
                             LayoutBuilder(
                                   builder: (BuildContext context, BoxConstraints constraints) {

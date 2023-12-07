@@ -68,7 +68,7 @@ class _PokedexState extends State<Pokedex> {
             getPokemonDetails(offset: offset);
           } else if (offset == 980) {
             getPokemonDetails(offset: offset, limit: 37);
-            offset = offset + 37;
+          
           }
 
           halfwayReached = true; // Set the flag to true

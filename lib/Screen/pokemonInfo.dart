@@ -48,6 +48,12 @@ class PokemonInfo extends StatelessWidget {
 
   }
 
+    int calculateCrossAxisCount(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    int columns = (screenWidth / 300).floor();
+    return columns > 0 ? columns : 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,196 +70,347 @@ class PokemonInfo extends StatelessWidget {
                 ],
               ),
             ),
-            child: MediaQuery.of(context).size.width <= 500
-                ? Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          "No. ${pokemonDetail?.id}",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.center,
-                        ),
-                        Container(
-                          height:
-                              MediaQuery.of(context).size.width * (60 / 100),
-                          width: MediaQuery.of(context).size.width * (60 / 100),
-                          child: Image.network(
-                            "${pokemonDetail?.sprites?.other?.officialArtwork?.frontDefault}",
+            child: 
+            GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: calculateCrossAxisCount(context),
+                ),
+                itemCount: 2,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(width: double.infinity,height: double.infinity, 
+                  child: index == 0? 
+                   Padding(
+                    padding: EdgeInsets.only(bottom: 20),
+                     child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(
+                            height: 30,
                           ),
-                        ),
-                        Text(
-                          "${pokemonDetail?.name}",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.center,
-                        ),
-                     
-                         SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              pokemonType(
-                                  "${pokemonDetail?.types![0].type?.name}",
-                                  getColor(0)),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              pokemonDetail!.types!.length >= 2
-                                  ? pokemonType(
-                                      "${pokemonDetail?.types![1].type?.name}",
-                                      getColor(1))
-                                  : Container()
-                            ],
+                          Text(
+                            "#${pokemonDetail?.id} ${pokemonDetail?.name}",
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w500),
+                            textAlign: TextAlign.center,
                           ),
-                        //),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            height: 100,
-                            decoration: BoxDecoration(
-                             // color: Colors.white.withOpacity(0.475),
-                              borderRadius: BorderRadius.circular(20.0),
+                          Expanded(                   
+                            child: Image.network(
+                              "${pokemonDetail?.sprites?.other?.officialArtwork?.frontDefault}",
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                          ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                        decoration: BoxDecoration(  
-                                          color: Colors.white.withOpacity(0.475),                                        
-                                          borderRadius:
-                                              const BorderRadius.all(Radius.circular(20)),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                const Text("Height",
-                                                style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-                                                const Text("Weight",
-                                                style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                 Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters",
-                                                 style: TextStyle(fontSize: 14.5)),
-                                                 Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg",
-                                                 style: TextStyle(fontSize: 14.5)),
-                                              ],
-                                            ),
-                                          ],
-                                        ))
-                                        ),
-                                        SizedBox( width: 10),
-                                Expanded(
-                                  flex: 2,
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.475),                                       
-
-                                          borderRadius:
-                                              const BorderRadius.all(Radius.circular(20)),
-
-                                        ),
-                                        child: 
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text("Abilities",style: TextStyle(fontSize: 17,
-                                                fontWeight: FontWeight.w500),     
-                                            ),
-                                            Text("${pokemonDetail?.abilities![0].ability?.name}",
-                                                 style: TextStyle(fontSize: 14)),      
-                                            
-                                          pokemonDetail!.abilities!.length >=2 ?
-                                          Text("${pokemonDetail?.abilities![1].ability?.name}",
-                                                 style: TextStyle(fontSize: 14)) : Container()
-                                          ],
-                                        )))
+                                pokemonType(
+                                    "${pokemonDetail?.types![0].type?.name}",
+                                    getColor(0)),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                pokemonDetail!.types!.length >= 2
+                                    ? pokemonType(
+                                        "${pokemonDetail?.types![1].type?.name}",
+                                        getColor(1))
+                                    : Container()
                               ],
-                            )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.475),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                              child: Column(
-                                mainAxisAlignment : MainAxisAlignment.start,
+                            ),
+                         
+                                     ]),
+                   ) : 
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: Column( 
+                       children: [                  
+                            const SizedBox(
+                            height: 8,
+                          ),
+                          Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              height: 100,
+                              decoration: BoxDecoration(
+                               // color: Colors.white.withOpacity(0.475),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                 const SizedBox(
-                                  height: 8,
-                                ),
-                                const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
-                                 ListView.builder(                                  
-                                  shrinkWrap: true,
-                                  itemCount: pokemonDetail?.stats?.length ?? 0,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return 
-                                     Container(
-                                       margin: const EdgeInsets.fromLTRB(4, 0, 0, 4),
-                                       child: Row(
-                                        children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Row(
-                                          children: [
-                                            Text("${pokemonDetail?.stats![index].stat?.name}", style: TextStyle(fontSize: 18)),
-                                        
+                                  Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                          decoration: BoxDecoration(  
+                                            color: Colors.white.withOpacity(0.475),                                        
+                                            borderRadius:
+                                                const BorderRadius.all(Radius.circular(20)),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  const Text("Height",
+                                                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+                                                  const Text("Weight",
+                                                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                   Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters",
+                                                   style: TextStyle(fontSize: 14.5)),
+                                                   Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg",
+                                                   style: TextStyle(fontSize: 14.5)),
+                                                ],
+                                              ),
                                             ],
-                                                                            ),
-                                        ),
-                                       Expanded(
-                                          flex: 1,
-                                        child: Row(
-                                          children: [
-                                            Container( color:getStatColor(
-                                              pokemonDetail!.stats![index].baseStat!
-                                            ),
-                                            height: 20,
-                                            width: (
-                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 >= 165? 165:
-                                                pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 
-                                                )
-                                                )
-                                                                       
+                                          ))
+                                          ),
+                                          SizedBox( width: 10),
+                                  Expanded(
+                                    flex: 2,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withOpacity(0.475),                                       
+                  
+                                            borderRadius:
+                                                const BorderRadius.all(Radius.circular(20)),
+                  
+                                          ),
+                                          child: 
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text("Abilities",style: TextStyle(fontSize: 17,
+                                                  fontWeight: FontWeight.w500),     
+                                              ),
+                                              Text("${pokemonDetail?.abilities![0].ability?.name}",
+                                                   style: TextStyle(fontSize: 14)),      
+                                              
+                                            pokemonDetail!.abilities!.length >=2 ?
+                                            Text("${pokemonDetail?.abilities![1].ability?.name}",
+                                                   style: TextStyle(fontSize: 14)) : Container()
                                             ],
-                                        ),
-                                                                         )
-                                                                         ]),
-                                     ); 
-                                  },
-                                ),
+                                          ),
+                                          ),
+                                          )
                                 ],
-                                ),
-                        ),                        
-                        )
-                      ],
-                    ),
+                              )
+                              ),
+                              const SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.475),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                                child: Column(
+                                  mainAxisAlignment : MainAxisAlignment.start,
+                                  children: [
+                                   const SizedBox(
+                                    height: 8,
+                                  ),
+                                  const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
+                                   ListView.builder(       
+                                    physics: const NeverScrollableScrollPhysics(),                           
+                                    shrinkWrap: true,
+                                    itemCount: pokemonDetail?.stats?.length ?? 0,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return 
+                                       Container(
+                                         margin: const EdgeInsets.fromLTRB(4, 0, 0, 4),
+                                         child: Row(
+                                          children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Row(
+                                            children: [
+                                              Text("${pokemonDetail?.stats![index].stat?.name}", style: TextStyle(fontSize: 18)),
+                                          
+                                              ],
+                                                                              ),
+                                          ),
+                                         Expanded(
+                                            flex: 1,
+                                          child: Row(
+                                            children: [
+                                              Container( color:getStatColor(
+                                                pokemonDetail!.stats![index].baseStat!
+                                              ),
+                                              height: 20,
+                                              width: (
+                                                  pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 >= 165? 165:
+                                                  pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 
+                                                  )
+                                                  )
+                                                                         
+                                              ],
+                                          ),
+                                                                           )
+                                                                           ]),
+                                       ); 
+                                    },
+                                  ),
+                                  ],
+                                  ),
+                          ),                        
+                          )
+                          
+                          
+                  
+                         
+                          
+                    ],),
                   )
-                : Container()));
+                  );
+                })
+                
+                
+                 
+                  //       Container(
+                  //           margin: const EdgeInsets.symmetric(vertical: 8),
+                  //           height: 100,
+                  //           decoration: BoxDecoration(
+                  //            // color: Colors.white.withOpacity(0.475),
+                  //             borderRadius: BorderRadius.circular(20.0),
+                  //           ),
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.start,
+                  //             crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //             children: [
+                  //               Expanded(
+                  //                   flex: 3,
+                  //                   child: Container(
+                  //                       decoration: BoxDecoration(  
+                  //                         color: Colors.white.withOpacity(0.475),                                        
+                  //                         borderRadius:
+                  //                             const BorderRadius.all(Radius.circular(20)),
+                  //                       ),
+                  //                       child: Column(
+                  //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //                         children: [
+                  //                           Row(
+                  //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //                             children: [
+                  //                               const Text("Height",
+                  //                               style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+                  //                               const Text("Weight",
+                  //                               style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
+                  //                             ],
+                  //                           ),
+                  //                           Row(
+                  //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //                             children: [
+                  //                                Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters",
+                  //                                style: TextStyle(fontSize: 14.5)),
+                  //                                Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg",
+                  //                                style: TextStyle(fontSize: 14.5)),
+                  //                             ],
+                  //                           ),
+                  //                         ],
+                  //                       ))
+                  //                       ),
+                  //                       SizedBox( width: 10),
+                  //               Expanded(
+                  //                 flex: 2,
+                  //                   child: Container(
+                  //                       decoration: BoxDecoration(
+                  //                         color: Colors.white.withOpacity(0.475),                                       
+
+                  //                         borderRadius:
+                  //                             const BorderRadius.all(Radius.circular(20)),
+
+                  //                       ),
+                  //                       child: 
+                  //                       Column(
+                  //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //                         children: [
+                  //                           Text("Abilities",style: TextStyle(fontSize: 17,
+                  //                               fontWeight: FontWeight.w500),     
+                  //                           ),
+                  //                           Text("${pokemonDetail?.abilities![0].ability?.name}",
+                  //                                style: TextStyle(fontSize: 14)),      
+                                            
+                  //                         pokemonDetail!.abilities!.length >=2 ?
+                  //                         Text("${pokemonDetail?.abilities![1].ability?.name}",
+                  //                                style: TextStyle(fontSize: 14)) : Container()
+                  //                         ],
+                  //                       )))
+                  //             ],
+                  //           )
+                  //           ),
+                  //       const SizedBox(
+                  //         height: 10,
+                  //       ),
+                  //       Expanded(
+                  //           child: Container(
+                  //             padding: const EdgeInsets.all(10),
+                  //               decoration: BoxDecoration(
+                  //         color: Colors.white.withOpacity(0.475),
+                  //         borderRadius: BorderRadius.circular(20.0),
+                  //       ),
+                  //             child: Column(
+                  //               mainAxisAlignment : MainAxisAlignment.start,
+                  //               children: [
+                  //                const SizedBox(
+                  //                 height: 8,
+                  //               ),
+                  //               const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
+                  //                ListView.builder(       
+                  //                 physic                           
+                  //                 shrinkWrap: true,
+                  //                 itemCount: pokemonDetail?.stats?.length ?? 0,
+                  //                 itemBuilder: (BuildContext context, int index) {
+                  //                   return 
+                  //                    Container(
+                  //                      margin: const EdgeInsets.fromLTRB(4, 0, 0, 4),
+                  //                      child: Row(
+                  //                       children: [
+                  //                       Expanded(
+                  //                         flex: 1,
+                  //                         child: Row(
+                  //                         children: [
+                  //                           Text("${pokemonDetail?.stats![index].stat?.name}", style: TextStyle(fontSize: 18)),
+                                        
+                  //                           ],
+                  //                                                           ),
+                  //                       ),
+                  //                      Expanded(
+                  //                         flex: 1,
+                  //                       child: Row(
+                  //                         children: [
+                  //                           Container( color:getStatColor(
+                  //                             pokemonDetail!.stats![index].baseStat!
+                  //                           ),
+                  //                           height: 20,
+                  //                           width: (
+                  //                               pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 >= 165? 165:
+                  //                               pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 
+                  //                               )
+                  //                               )
+                                                                       
+                  //                           ],
+                  //                       ),
+                  //                                                        )
+                  //                                                        ]),
+                  //                    ); 
+                  //                 },
+                  //               ),
+                  //               ],
+                  //               ),
+                  //       ),                        
+                  //       )
+                  //     ],
+                  //   ),
+                  // )
+                 ));
   }
 }

@@ -15,9 +15,10 @@ class PokemonInfo extends StatelessWidget {
   }
 
   Widget pokemonType(String type, Color color) {
-    return Container(
-        height: 45,
-        width: 100,
+    return Container(        
+      margin: EdgeInsets.only(bottom: 28),
+        height: 42,
+        width: 102,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black, width: 1),
           color: color,
@@ -78,22 +79,21 @@ class PokemonInfo extends StatelessWidget {
                 ),
                 itemCount: 2,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(width: double.infinity,height: double.infinity, 
-                  child: index == 0? 
-                   Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                     child: Column(
+                  return 
+               
+                  index == 0? 
+                    Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(
-                            height: 30,
+                            height: 22,
                           ),
                           Text(
                             "#${pokemonDetail?.id} ${pokemonDetail?.name}",
                             style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 32,
+                                fontSize: 28.5,
                                 fontWeight: FontWeight.w500),
                             textAlign: TextAlign.center,
                           ),
@@ -119,14 +119,15 @@ class PokemonInfo extends StatelessWidget {
                               ],
                             ),
                          
-                                     ]),
-                   ) : 
+                                     ],
+                    )
+                   : 
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: Column( 
                        children: [                  
                             const SizedBox(
-                            height: 8,
+                            height: 0,
                           ),
                           Container(
                               margin: const EdgeInsets.symmetric(vertical: 8),
@@ -203,10 +204,11 @@ class PokemonInfo extends StatelessWidget {
                               )
                               ),
                               const SizedBox(
-                            height: 10,
+                            height: 4,
                           ),
                           Expanded(
                               child: Container(
+                                margin: EdgeInsets.only(bottom: 6),
                                 padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.475),
@@ -219,6 +221,9 @@ class PokemonInfo extends StatelessWidget {
                                     height: 8,
                                   ),
                                   const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
+                                   const SizedBox(
+                                    height: 16,
+                                  ),
                                    ListView.builder(       
                                     physics: const NeverScrollableScrollPhysics(),                           
                                     shrinkWrap: true,
@@ -226,7 +231,7 @@ class PokemonInfo extends StatelessWidget {
                                     itemBuilder: (BuildContext context, int index) {
                                       return 
                                        Container(
-                                         margin: const EdgeInsets.fromLTRB(4, 0, 0, 4),
+                                         margin: const EdgeInsets.fromLTRB(4, 4, 0, 4),
                                          child: Row(
                                           children: [
                                           Expanded(
@@ -269,8 +274,8 @@ class PokemonInfo extends StatelessWidget {
                          
                           
                     ],),
-                  )
                   );
+                  
                 })
                 
                 

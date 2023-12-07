@@ -15,8 +15,8 @@ class PokemonInfo extends StatelessWidget {
   }
 
   Widget pokemonType(String type, Color color) {
-    return Container(        
-      margin: EdgeInsets.only(bottom: 28),
+    return Container(
+        margin: EdgeInsets.only(bottom: 28),
         height: 42,
         width: 102,
         decoration: BoxDecoration(
@@ -33,23 +33,22 @@ class PokemonInfo extends StatelessWidget {
             )));
   }
 
-  Color getStatColor(int stat){
-   Color color;
-     if(stat < 40){
+  Color getStatColor(int stat) {
+    Color color;
+    if (stat < 40) {
       color = Colors.red;
-     }else if(stat >= 40 && stat < 60){
+    } else if (stat >= 40 && stat < 60) {
       color = Color(0xFFfa9223);
-     }else if(stat >= 60 && stat < 90){
+    } else if (stat >= 60 && stat < 90) {
       color = Color(0xFFFFCE4B);
-     }else{
-       color = Color(0xFF42d481);
-     }
+    } else {
+      color = Color(0xFF42d481);
+    }
 
-     return color;
-
+    return color;
   }
 
-    int calculateCrossAxisCount(BuildContext context) {
+  int calculateCrossAxisCount(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     int columns = (screenWidth / 300).floor();
     return columns > 0 ? columns : 1;
@@ -71,37 +70,34 @@ class PokemonInfo extends StatelessWidget {
                 ],
               ),
             ),
-            child: 
-            GridView.builder(
+            child: GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: calculateCrossAxisCount(context),
                 ),
                 itemCount: 2,
                 itemBuilder: (BuildContext context, int index) {
-                  return 
-               
-                  index == 0? 
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const SizedBox(
-                            height: 22,
-                          ),
-                          Text(
-                            "#${pokemonDetail?.id} ${pokemonDetail?.name}",
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 28.5,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center,
-                          ),
-                          Expanded(                   
-                            child: Image.network(
-                              "${pokemonDetail?.sprites?.other?.officialArtwork?.frontDefault}",
+                  return index == 0
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const SizedBox(
+                              height: 22,
                             ),
-                          ),
+                            Text(
+                              "#${pokemonDetail?.id} ${pokemonDetail?.name}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28.5,
+                                  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,
+                            ),
+                            Expanded(
+                              child: Image.network(
+                                "${pokemonDetail?.sprites?.other?.officialArtwork?.frontDefault}",
+                              ),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -118,304 +114,203 @@ class PokemonInfo extends StatelessWidget {
                                     : Container()
                               ],
                             ),
-                         
-                                     ],
-                    )
-                   : 
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: Column( 
-                       children: [                  
-                            const SizedBox(
-                            height: 0,
-                          ),
-                          Container(
-                              margin: const EdgeInsets.symmetric(vertical: 8),
-                              height: 100,
-                              decoration: BoxDecoration(
-                               // color: Colors.white.withOpacity(0.475),
-                                borderRadius: BorderRadius.circular(20.0),
+                          ],
+                        )
+                      : Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 0,
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                          decoration: BoxDecoration(  
-                                            color: Colors.white.withOpacity(0.475),                                        
+                              Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Expanded(
+                                          flex: 3,
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white
+                                                    .withOpacity(0.475),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(20)),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      const Text("Height",
+                                                          style: TextStyle(
+                                                              fontSize: 17,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)),
+                                                      const Text("Weight",
+                                                          style: TextStyle(
+                                                              fontSize: 17,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Text(
+                                                          "${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters",
+                                                          style: TextStyle(
+                                                              fontSize: 14.5)),
+                                                      Text(
+                                                          "${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg",
+                                                          style: TextStyle(
+                                                              fontSize: 14.5)),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ))),
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.475),
                                             borderRadius:
-                                                const BorderRadius.all(Radius.circular(20)),
+                                                const BorderRadius.all(
+                                                    Radius.circular(20)),
                                           ),
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  const Text("Height",
-                                                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-                                                  const Text("Weight",
-                                                  style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-                                                ],
+                                              Text(
+                                                "Abilities",
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                   Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters",
-                                                   style: TextStyle(fontSize: 14.5)),
-                                                   Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg",
-                                                   style: TextStyle(fontSize: 14.5)),
-                                                ],
-                                              ),
-                                            ],
-                                          ))
-                                          ),
-                                          SizedBox( width: 10),
-                                  Expanded(
-                                    flex: 2,
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white.withOpacity(0.475),                                       
-                  
-                                            borderRadius:
-                                                const BorderRadius.all(Radius.circular(20)),
-                  
-                                          ),
-                                          child: 
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Text("Abilities",style: TextStyle(fontSize: 17,
-                                                  fontWeight: FontWeight.w500),     
-                                              ),
-                                              Text("${pokemonDetail?.abilities![0].ability?.name}",
-                                                   style: TextStyle(fontSize: 14)),      
-                                              
-                                            pokemonDetail!.abilities!.length >=2 ?
-                                            Text("${pokemonDetail?.abilities![1].ability?.name}",
-                                                   style: TextStyle(fontSize: 14)) : Container()
+                                              Text(
+                                                  "${pokemonDetail?.abilities![0].ability?.name}",
+                                                  style:
+                                                      TextStyle(fontSize: 14)),
+                                              pokemonDetail!
+                                                          .abilities!.length >=
+                                                      2
+                                                  ? Text(
+                                                      "${pokemonDetail?.abilities![1].ability?.name}",
+                                                      style: TextStyle(
+                                                          fontSize: 14))
+                                                  : Container()
                                             ],
                                           ),
-                                          ),
-                                          )
-                                ],
-                              )
-                              ),
+                                        ),
+                                      )
+                                    ],
+                                  )),
                               const SizedBox(
-                            height: 4,
-                          ),
-                          Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 6),
-                                padding: const EdgeInsets.all(10),
+                                height: 4,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 6),
+                                  padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.475),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                                child: Column(
-                                  mainAxisAlignment : MainAxisAlignment.start,
-                                  children: [
-                                   const SizedBox(
-                                    height: 8,
+                                    color: Colors.white.withOpacity(0.475),
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
-                                   const SizedBox(
-                                    height: 16,
-                                  ),
-                                   ListView.builder(       
-                                    physics: const NeverScrollableScrollPhysics(),                           
-                                    shrinkWrap: true,
-                                    itemCount: pokemonDetail?.stats?.length ?? 0,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return 
-                                       Container(
-                                         margin: const EdgeInsets.fromLTRB(4, 4, 0, 4),
-                                         child: Row(
-                                          children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Row(
-                                            children: [
-                                              Text("${pokemonDetail?.stats![index].stat?.name}", style: TextStyle(fontSize: 18)),
-                                          
-                                              ],
-                                                                              ),
-                                          ),
-                                         Expanded(
-                                            flex: 1,
-                                          child: Row(
-                                            children: [
-                                              Container( color:getStatColor(
-                                                pokemonDetail!.stats![index].baseStat!
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      const Text("Base Stat",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500)),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            pokemonDetail?.stats?.length ?? 0,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Container(
+                                            margin: const EdgeInsets.fromLTRB(
+                                                4, 4, 0, 4),
+                                            child: Row(children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                        "${pokemonDetail?.stats![index].stat?.name}",
+                                                        style: TextStyle(
+                                                            fontSize: 18)),
+                                                  ],
+                                                ),
                                               ),
-                                              height: 20,
-                                              width: (
-                                                  pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 >= 165? 165:
-                                                  pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 
-                                                  )
-                                                  )
-                                                                         
-                                              ],
-                                          ),
-                                                                           )
-                                                                           ]),
-                                       ); 
-                                    },
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                        color: getStatColor(
+                                                            pokemonDetail!
+                                                                .stats![index]
+                                                                .baseStat!),
+                                                        height: 20,
+                                                        width: (pokemonDetail!
+                                                                        .stats![
+                                                                            index]
+                                                                        .baseStat!
+                                                                        .toDouble() *
+                                                                    1.05 >=
+                                                                165
+                                                            ? 165
+                                                            : pokemonDetail!
+                                                                    .stats![
+                                                                        index]
+                                                                    .baseStat!
+                                                                    .toDouble() *
+                                                                1.05))
+                                                  ],
+                                                ),
+                                              )
+                                            ]),
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  ],
-                                  ),
-                          ),                        
-                          )
-                          
-                          
-                  
-                         
-                          
-                    ],),
-                  );
-                  
-                })
-                
-                
-                 
-                  //       Container(
-                  //           margin: const EdgeInsets.symmetric(vertical: 8),
-                  //           height: 100,
-                  //           decoration: BoxDecoration(
-                  //            // color: Colors.white.withOpacity(0.475),
-                  //             borderRadius: BorderRadius.circular(20.0),
-                  //           ),
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.start,
-                  //             crossAxisAlignment: CrossAxisAlignment.stretch,
-                  //             children: [
-                  //               Expanded(
-                  //                   flex: 3,
-                  //                   child: Container(
-                  //                       decoration: BoxDecoration(  
-                  //                         color: Colors.white.withOpacity(0.475),                                        
-                  //                         borderRadius:
-                  //                             const BorderRadius.all(Radius.circular(20)),
-                  //                       ),
-                  //                       child: Column(
-                  //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //                         children: [
-                  //                           Row(
-                  //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //                             children: [
-                  //                               const Text("Height",
-                  //                               style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-                  //                               const Text("Weight",
-                  //                               style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500)),
-                  //                             ],
-                  //                           ),
-                  //                           Row(
-                  //                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //                             children: [
-                  //                                Text("${(pokemonDetail!.height!.toDouble() * 0.1).toStringAsFixed(1)} meters",
-                  //                                style: TextStyle(fontSize: 14.5)),
-                  //                                Text("${(pokemonDetail!.weight!.toDouble() * 0.1).toStringAsFixed(1)} kg",
-                  //                                style: TextStyle(fontSize: 14.5)),
-                  //                             ],
-                  //                           ),
-                  //                         ],
-                  //                       ))
-                  //                       ),
-                  //                       SizedBox( width: 10),
-                  //               Expanded(
-                  //                 flex: 2,
-                  //                   child: Container(
-                  //                       decoration: BoxDecoration(
-                  //                         color: Colors.white.withOpacity(0.475),                                       
-
-                  //                         borderRadius:
-                  //                             const BorderRadius.all(Radius.circular(20)),
-
-                  //                       ),
-                  //                       child: 
-                  //                       Column(
-                  //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //                         children: [
-                  //                           Text("Abilities",style: TextStyle(fontSize: 17,
-                  //                               fontWeight: FontWeight.w500),     
-                  //                           ),
-                  //                           Text("${pokemonDetail?.abilities![0].ability?.name}",
-                  //                                style: TextStyle(fontSize: 14)),      
-                                            
-                  //                         pokemonDetail!.abilities!.length >=2 ?
-                  //                         Text("${pokemonDetail?.abilities![1].ability?.name}",
-                  //                                style: TextStyle(fontSize: 14)) : Container()
-                  //                         ],
-                  //                       )))
-                  //             ],
-                  //           )
-                  //           ),
-                  //       const SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       Expanded(
-                  //           child: Container(
-                  //             padding: const EdgeInsets.all(10),
-                  //               decoration: BoxDecoration(
-                  //         color: Colors.white.withOpacity(0.475),
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //       ),
-                  //             child: Column(
-                  //               mainAxisAlignment : MainAxisAlignment.start,
-                  //               children: [
-                  //                const SizedBox(
-                  //                 height: 8,
-                  //               ),
-                  //               const Text("Base Stat",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500)),
-                  //                ListView.builder(       
-                  //                 physic                           
-                  //                 shrinkWrap: true,
-                  //                 itemCount: pokemonDetail?.stats?.length ?? 0,
-                  //                 itemBuilder: (BuildContext context, int index) {
-                  //                   return 
-                  //                    Container(
-                  //                      margin: const EdgeInsets.fromLTRB(4, 0, 0, 4),
-                  //                      child: Row(
-                  //                       children: [
-                  //                       Expanded(
-                  //                         flex: 1,
-                  //                         child: Row(
-                  //                         children: [
-                  //                           Text("${pokemonDetail?.stats![index].stat?.name}", style: TextStyle(fontSize: 18)),
-                                        
-                  //                           ],
-                  //                                                           ),
-                  //                       ),
-                  //                      Expanded(
-                  //                         flex: 1,
-                  //                       child: Row(
-                  //                         children: [
-                  //                           Container( color:getStatColor(
-                  //                             pokemonDetail!.stats![index].baseStat!
-                  //                           ),
-                  //                           height: 20,
-                  //                           width: (
-                  //                               pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 >= 165? 165:
-                  //                               pokemonDetail!.stats![index].baseStat!.toDouble() * 1.05 
-                  //                               )
-                  //                               )
-                                                                       
-                  //                           ],
-                  //                       ),
-                  //                                                        )
-                  //                                                        ]),
-                  //                    ); 
-                  //                 },
-                  //               ),
-                  //               ],
-                  //               ),
-                  //       ),                        
-                  //       )
-                  //     ],
-                  //   ),
-                  // )
-                 ));
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                })));
   }
 }

@@ -57,19 +57,14 @@ class _PokedexState extends State<Pokedex> {
             (_scrollController.position.maxScrollExtent ==
                     _scrollController.offset) &&
                 !_scrollController.position.outOfRange) {
-         // if (isFirstUpdatePokemon) {
-            offset = offset + 50;
-           // isFirstUpdatePokemon = false;
-         // } 
-
+          offset = offset + 50;
           if (offset < 1000) {
             getPokemonDetails(offset: offset);
           } else if (offset == 1000) {
             getPokemonDetails(offset: offset, limit: 17);
-          
           }
 
-          halfwayReached = true; // Set the flag to true
+          halfwayReached = true;
         }
       }
     });
@@ -98,7 +93,6 @@ class _PokedexState extends State<Pokedex> {
         halfwayReached = false;
       });
     } catch (e) {
-      //throw Exception('err Pokemon details: $e');
       getPokemonDetails(offset: _offset, limit: _limit);
     }
   }
@@ -156,7 +150,6 @@ class _PokedexState extends State<Pokedex> {
     Orientation orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       backgroundColor: Colors.white,
-     
       body: Container(
         margin: const EdgeInsets.all(8),
         child: allPokemom.isNotEmpty
@@ -169,22 +162,23 @@ class _PokedexState extends State<Pokedex> {
                 ),
                 itemCount: allPokemom.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return
-                      GestureDetector(
-                        onTap: () => {
-                      Navigator.push( context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PokemonInfo(pokemonDetail: allPokemom[index]),
-                                    ),
-                                  )
-                        },
-                        child: Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
+                  return GestureDetector(
+                    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PokemonInfo(pokemonDetail: allPokemom[index]),
+                        ),
+                      )
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
                         color: getColor(index),
                         borderRadius: BorderRadius.circular(20.0),
-                                          ),
-                                          child: Center(
+                      ),
+                      child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,9 +188,10 @@ class _PokedexState extends State<Pokedex> {
                               child: Text(
                                 "# ${allPokemom[index].id}",
                                 style: TextStyle(
-                                    fontSize: orientation == Orientation.landscape
-                                        ? 14
-                                        : 22,
+                                    fontSize:
+                                        orientation == Orientation.landscape
+                                            ? 14
+                                            : 22,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white),
                               ),
@@ -211,41 +206,52 @@ class _PokedexState extends State<Pokedex> {
                                 child: allPokemom[index]
                                             .sprites
                                             ?.other
-                                            ?.officialArtwork?.frontDefault !=
+                                            ?.officialArtwork
+                                            ?.frontDefault !=
                                         null
                                     ? Stack(
-                                      children: [
-                                         Align(
-                                            alignment: Alignment.center,
-                                            child: 
-                                             Opacity(opacity: 0.7, child: Image.asset(
-                                              'assets/images/bgpokeball.jpg',
-                                              height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
-                                                 
-                                          ),
-                                        Image.network(
+                                        children: [
+                                          Align(
+                                              alignment: Alignment.center,
+                                              child: Opacity(
+                                                opacity: 0.7,
+                                                child: Image.asset(
+                                                    'assets/images/bgpokeball.jpg',
+                                                    height: ((MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width -
+                                                            20) /
+                                                        calculateCrossAxisCount(
+                                                            context))),
+                                              )),
+                                          Image.network(
                                             "${allPokemom[index].sprites?.other?.officialArtwork?.frontDefault}",
-                                            width:
-                                                orientation == Orientation.landscape
-                                                    ? 90
-                                                    : 100,
+                                            width: orientation ==
+                                                    Orientation.landscape
+                                                ? 90
+                                                : 100,
                                           ),
-                                      ],
-                                    )
-                                    :  Align(
-                                            alignment: Alignment.center,
-                                            child: 
-                                             Opacity(opacity: 0.55, child: Image.asset(
+                                        ],
+                                      )
+                                    : Align(
+                                        alignment: Alignment.center,
+                                        child: Opacity(
+                                          opacity: 0.55,
+                                          child: Image.asset(
                                               'assets/images/bgpokeball.jpg',
-                                              height: ((MediaQuery.of(context).size.width - 20) / calculateCrossAxisCount(context))),) 
-                                                 
-                                    )
-                                    ),
+                                              height: ((MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      20) /
+                                                  calculateCrossAxisCount(
+                                                      context))),
+                                        ))),
                             LayoutBuilder(
                               builder: (BuildContext context,
                                   BoxConstraints constraints) {
                                 double fontSize = 16;
-                      
+
                                 TextPainter textPainter = TextPainter(
                                   text: TextSpan(
                                       text: '${allPokemom[index].name}',
@@ -253,12 +259,12 @@ class _PokedexState extends State<Pokedex> {
                                   maxLines: 1,
                                   textDirection: TextDirection.ltr,
                                 )..layout(maxWidth: constraints.maxWidth);
-                      
+
                                 if (textPainter.didExceedMaxLines) {
                                   // Handle overflow
                                   fontSize = 13.5;
                                 }
-                      
+
                                 return Text(
                                   maxLines: 1,
                                   '${allPokemom[index].name}',
@@ -274,23 +280,13 @@ class _PokedexState extends State<Pokedex> {
                             )
                           ],
                         ),
-                                          ),
-                                        ),
-                      );
-
-                  // const Center(child: CircularProgressIndicator());
+                      ),
+                    ),
+                  );
                 },
               )
             : const Center(child: CircularProgressIndicator()),
       ),
     );
   }
-  // },
-  //  ),
-  //   );
-
-  // }
 }
-
-
-

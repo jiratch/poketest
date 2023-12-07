@@ -48,7 +48,7 @@ class _PokedexState extends State<Pokedex> {
   void initState() {
     super.initState();
 
-    getPokemonDetails(limit: 20); //getPokemonDetails first 20 pokemon
+    getPokemonDetails(limit: 50); //getPokemonDetails first 50 pokemon
 
     _scrollController.addListener(() {
       if (!halfwayReached) {
@@ -57,17 +57,15 @@ class _PokedexState extends State<Pokedex> {
             (_scrollController.position.maxScrollExtent ==
                     _scrollController.offset) &&
                 !_scrollController.position.outOfRange) {
-          if (isFirstUpdatePokemon) {
-            offset = offset + 20;
-            isFirstUpdatePokemon = false;
-          } else {
-            offset = offset + 60;
-          }
+         // if (isFirstUpdatePokemon) {
+            offset = offset + 50;
+           // isFirstUpdatePokemon = false;
+         // } 
 
-          if (offset < 980) {
+          if (offset < 1000) {
             getPokemonDetails(offset: offset);
-          } else if (offset == 980) {
-            getPokemonDetails(offset: offset, limit: 37);
+          } else if (offset == 1000) {
+            getPokemonDetails(offset: offset, limit: 17);
           
           }
 
@@ -84,7 +82,7 @@ class _PokedexState extends State<Pokedex> {
     super.dispose();
   }
 
-  Future<void> getPokemonDetails({int offset = 0, int limit = 60}) async {
+  Future<void> getPokemonDetails({int offset = 0, int limit = 50}) async {
     int _offset = offset;
     int _limit = limit;
     try {
@@ -105,7 +103,7 @@ class _PokedexState extends State<Pokedex> {
     }
   }
 
-  Future<List<Pokemon>> getPokemons({int offset = 0, int limit = 60}) async {
+  Future<List<Pokemon>> getPokemons({int offset = 0, int limit = 50}) async {
     List<Pokemon> pokemons = [];
 
     try {
